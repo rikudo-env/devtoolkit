@@ -21,8 +21,8 @@
     "vite": "^7.1.3"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "tsc -b tsconfig.app.json && vite build --config vite.config.render.ts",
     "dev": "vite --config vite.config.render.ts",
-    "preview": "vite preview"
+    "lint": "eslint ."
   }
 }
