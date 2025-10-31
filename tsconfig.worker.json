@@ -8,5 +8,4 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/worker"]
 }
