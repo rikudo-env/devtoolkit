@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import {
-    Terminal, Sun, Moon, Copy, Download, RefreshCw, X, GripVertical, Trash2, Plus, Variable, Package, Play, Settings, FileText, Server, Cog, Clock, Code2,
+    Terminal, Sun, Moon, Copy, Download, RefreshCw, X, GripVertical, Trash2, Variable, Play, Settings, FileText, Server, Cog, Clock, Code2,
     Key,
     Users
 } from 'lucide-react';
-import ToolCard from '@/react-app/components/ToolCard';
+import ToolCard, { GenerateButton } from '@/react-app/components/ToolCard';
 import {
     generateSSHKeyPair, generateDockerCommand, generateKubernetesYaml,
     generateNginxConfig, generateSystemdService, generateCronExpression, parseCronExpression
@@ -249,7 +249,7 @@ const DraggableCommand: React.FC<{
 };
 
 // === Shell Constructor ===
-const ShellConstructor: React.FC<{ onGenerate: () => void }> = ({ onGenerate }) => {
+const ShellConstructor: React.FC = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [commands, setCommands] = useState<ShellCommand[]>([]);
     const [variables, setVariables] = useState<Variable[]>(defaultVariables);
@@ -348,15 +348,14 @@ const ShellConstructor: React.FC<{ onGenerate: () => void }> = ({ onGenerate }) 
 
     const openModal = () => {
         setModalOpen(true);
-        onGenerate();
     };
 
     return (
         <>
-            <ToolCard title="Shell Constructor Pro" description="Drag & drop, variables, presets, 50+ commands" icon={<Terminal className="w-5 h-5" />} onClick={openModal}>
-                <button onClick={(e) => { e.stopPropagation(); openModal(); }} className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded hover:from-blue-700 hover:to-purple-700 text-sm font-medium">
+            <ToolCard title="Shell Constructor Pro" description="Drag & drop, variables, presets, 50+ commands" icon={<Terminal className="w-5 h-5" />}>
+                <GenerateButton onClick={openModal}>
                     Open Constructor
-                </button>
+                </GenerateButton>
             </ToolCard>
 
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Shell Script Constructor Pro">
@@ -470,7 +469,7 @@ const ShellConstructor: React.FC<{ onGenerate: () => void }> = ({ onGenerate }) 
 };
 
 // === Остальные генераторы (без изменений) ===
-const ConfigGenerator: React.FC<{ type: string; onGenerate: () => void }> = ({ type, onGenerate }) => {
+const ConfigGenerator: React.FC<{ type: string }> = ({ type }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [config, setConfig] = useState('');
     const [language, setLanguage] = useState('yaml');
@@ -546,17 +545,15 @@ const ConfigGenerator: React.FC<{ type: string; onGenerate: () => void }> = ({ t
         setConfig(result);
         setLanguage(lang);
         setModalOpen(true);
-        onGenerate();
     };
 
     return (
         <>
-            <ToolCard title={getTitle(type)} description={getDescription(type)} icon={getIcon(type)} onClick={generateConfig}>
-                <button onClick={(e) => { e.stopPropagation(); generateConfig(); }} className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
+            <ToolCard title={getTitle(type)} description={getDescription(type)} icon={getIcon(type)}>
+                <GenerateButton onClick={generateConfig}>
                     Generate
-                </button>
+                </GenerateButton>
             </ToolCard>
-
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={getTitle(type)}>
                 <div className="flex flex-col h-full">
                     <div className="flex items-center justify-between p-3 border-b border-slate-700">
@@ -573,9 +570,9 @@ const ConfigGenerator: React.FC<{ type: string; onGenerate: () => void }> = ({ t
                             <button onClick={downloadFile} className="flex items-center gap-1 px-3 py-1 text-sm text-slate-300 bg-slate-800 rounded hover:bg-slate-700">
                                 <Download className="w-4 h-4" /> Download
                             </button>
-                            <button onClick={generateConfig} className="flex items-center gap-1 px-3 py-1 text-sm text-slate-300 bg-slate-800 rounded hover:bg-slate-700">
+                            <GenerateButton onClick={generateConfig}>
                                 <RefreshCw className="w-4 h-4" /> Regenerate
-                            </button>
+                            </GenerateButton>
                         </div>
                     </div>
                     <div className="flex-1">
@@ -620,7 +617,6 @@ const getFileName = (type: string): string => {
 };
 
 export default function ConfigGeneratorPage() {
-    const [generatedCount, setGeneratedCount] = useState(0);
     const generators = ['ssh', 'docker', 'k8s', 'nginx', 'systemd', 'cron', 'dockerfile', 'terraform', 'ansible'];
 
     return (
@@ -633,9 +629,9 @@ export default function ConfigGeneratorPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {generators.map((t) => (
-                        <ConfigGenerator key={t} type={t} onGenerate={() => setGeneratedCount(c => c + 1)} />
+                        <ConfigGenerator key={t} type={t} />
                     ))}
-                    <ShellConstructor onGenerate={() => setGeneratedCount(c => c + 1)} />
+                    <ShellConstructor />
                 </div>
             </div>
         </div>
