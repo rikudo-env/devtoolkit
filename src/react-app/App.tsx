@@ -6,6 +6,8 @@ import SecurityPage from "@/react-app/pages/Security";
 import NetworkPage from "@/react-app/pages/Network";
 import ConvertersPage from "@/react-app/pages/Converters";
 import DevOpsPage from "@/react-app/pages/DevOps";
+import ConfigGeneratorPage from "./pages/ConfigGenerator";
+import TemplatesPage from "./pages/TemplatesPages";
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
           <Route path="/network" element={<NetworkPage />} />
           <Route path="/converters" element={<ConvertersPage />} />
           <Route path="/devops" element={<DevOpsPage />} />
+          <Route path="/config-generator" element={<ConfigGeneratorPage />} />
+          <Route path="/templates" element={<TemplatesPage />} />
         </Routes>
       </Layout>
     </Router>

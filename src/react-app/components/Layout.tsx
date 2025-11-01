@@ -1,15 +1,17 @@
 import { ReactNode, useState } from 'react';
 import { Link, useLocation } from 'react-router';
-import { 
-  Code, 
-  Key, 
-  Clock, 
-  Shield, 
-  Network, 
+import {
+  Code,
+  Key,
+  Clock,
+  Shield,
+  Network,
   RotateCcw,
   Server,
   Menu,
-  X
+  X,
+  Settings,
+  FileText
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -52,6 +54,18 @@ const menuItems = [
     label: 'DevOps',
     icon: <Server className="w-5 h-5" />,
     description: 'SSH, команды, утилиты'
+  },
+  {
+    path: '/config-generator',
+    label: 'Генератор конфигураций',
+    icon: <Settings className="w-5 h-5" />,
+    description: 'Конфигурации для различных систем'
+  },
+  {
+    path: '/templates',
+    label: 'Шаблоны',
+    icon: <FileText className="w-5 h-5" />,
+    description: 'Шаблоны для различных систем'
   }
 ];
 
@@ -63,7 +77,7 @@ export default function Layout({ children }: LayoutProps) {
     <div className="h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -108,8 +122,8 @@ export default function Layout({ children }: LayoutProps) {
                     onClick={() => setSidebarOpen(false)}
                     className={`
                       flex items-center gap-3 p-3 rounded-lg transition-all duration-200
-                      ${isActive 
-                        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' 
+                      ${isActive
+                        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
                         : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
                       }
                     `}
